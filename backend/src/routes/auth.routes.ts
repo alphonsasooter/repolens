@@ -10,7 +10,7 @@ router.get('/github', (_req, res) => {
     `client_id=${process.env.GITHUB_CLIENT_ID}` +
     `&redirect_uri=${process.env.GITHUB_CALLBACK_URL}` +
     `&scope=read:user%20repo`;
-  res.redirect(redirectUri);
+  res.redirect(redirectUri); // 🔹 MUST redirect to GitHub
 });
 
 // Step 2: GitHub callback
@@ -19,6 +19,7 @@ router.get('/github/callback', async (req, res) => {
   if (!code) return res.status(400).send('No code');
 
   try {
+    // Exchange code for access token
     const tokenRes = await axios.post(
       'https://github.com/login/oauth/access_token',
       {
@@ -36,20 +37,10 @@ router.get('/github/callback', async (req, res) => {
     const userRes = await axios.get('https://api.github.com/user', {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
-
     const githubUser = userRes.data;
 
-    // Optional: Fetch repos
-    const reposRes = await axios.get('https://api.github.com/user/repos', {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-
-    const githubRepos = reposRes.data;
-
-    // Redirect to frontend with username (and token if you want)
-    res.redirect(
-      `http://localhost:5173/dashboard?username=${githubUser.login}&token=${accessToken}`
-    );
+    // 🔹 Redirect to frontend dashboard
+    res.redirect(`http://localhost:5173/dashboard?username=${githubUser.login}`);
   } catch (err) {
     console.error(err);
     res.status(500).send('GitHub OAuth failed');

@@ -4,14 +4,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const app = (0, express_1.default)();
-const PORT = 3001;
-app.use(express_1.default.json());
-app.use('/auth', auth_routes_1.default);
-app.get('/', (_req, res) => {
-    res.send('Backend running');
+const PORT = process.env.PORT || 3001;
+/* ✅ TEST ROUTE */
+app.get("/", (req, res) => {
+    res.send("Analyzer API is running ");
+});
+/* ✅ GITHUB LOGIN ROUTE */
+app.get("/api/auth/github", (req, res) => {
+    const redirectUrl = "https://github.com/login/oauth/authorize" +
+        `?client_id=${process.env.GITHUB_CLIENT_ID}` +
+        `&redirect_uri=${process.env.GITHUB_CALLBACK_URL}`;
+    res.redirect(redirectUrl);
+});
+/* ✅ GITHUB CALLBACK ROUTE */
+app.get("/api/auth/github/callback", (req, res) => {
+    res.send("GitHub callback reached successfully");
 });
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(` Server running on http://localhost:${PORT}`);
 });
