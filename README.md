@@ -1,6 +1,6 @@
-![Stars](https://img.shields.io/github/stars/alphonsacoder/repolens)
-![Forks](https://img.shields.io/github/forks/alphonsacoder/repolens)
-![Issues](https://img.shields.io/github/issues/alphonsacoder/repolens)
+![Stars](https://img.shields.io/github/stars/alphonsasooter/repolens)
+![Forks](https://img.shields.io/github/forks/alphonsasooter/repolens)
+![Issues](https://img.shields.io/github/issues/alphonsasooter/repolens)
 
 # RepoLens - GitHub Repository Analyzer
 
